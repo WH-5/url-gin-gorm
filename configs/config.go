@@ -45,12 +45,12 @@ type ScConfig struct {
 	Length int `mapstructure:"length"`
 }
 
-// 连接数据库的字符串 pgsql格式
+// PgDsn 连接数据库的字符串 pgsql格式
 func (d DbConfig) PgDsn() string {
 	return fmt.Sprintf("%s://%s:%s@%s:%d/%s?sslmode=%s", d.Driver, d.User, d.Password, d.Host, d.Port, d.DBName, d.SSLMode)
 }
 
-// 加载配置
+// LoadConfig 加载配置
 func LoadConfig(filePath string) (*Config, error) {
 
 	viper.SetConfigFile(filePath)

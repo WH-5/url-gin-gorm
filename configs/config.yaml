@@ -12,7 +12,7 @@ database:
 
 redis:
   address: "localhost:6379"
-  password: ""
+  password: "whwhwhwhwhwh1321"
   db: 0
 
 server:
@@ -22,7 +22,7 @@ server:
 
 app:
   base_host: ${HOST_NAME}
-  # 这里需要设置一个名为HOST_NAME的环境变量，值为你的公网ip或者域名
+  # 这里需要在你的系统设置一个名为HOST_NAME的环境变量，值为你的公网ip或者域名，能访问的
   base_port: ""
   #显示重定向地址时的主机及端口名，我设置了反向代理，不用显示端口号了，否则需要设置
   default_duration: "2h" #默认过期时间

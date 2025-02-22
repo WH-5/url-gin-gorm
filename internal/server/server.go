@@ -15,7 +15,7 @@ import (
 )
 
 // NewHttpServer 创建http服务器
-func NewHttpServer(urlBiz *service.UrlBiz) *gin.Engine {
+func NewHttpServer(urlBiz service.UrlBiz) *gin.Engine {
 	r := gin.Default()
 
 	// 注册中间件
@@ -32,7 +32,7 @@ func NewHttpServer(urlBiz *service.UrlBiz) *gin.Engine {
 	}
 
 	// 依赖注入 Handler
-	urlHandler := service.NewUrlHandler(*urlBiz)
+	urlHandler := service.NewUrlHandler(urlBiz)
 
 	// 注册路由
 	RegisterRoutes(r, urlHandler)
@@ -50,7 +50,7 @@ func RegisterRoutes(router *gin.Engine, handler *service.UrlHandler) {
 }
 
 // RunServer 启动http服务器，包括关闭
-func RunServer(port string, urlBiz *service.UrlBiz) {
+func RunServer(port string, urlBiz service.UrlBiz) {
 	router := NewHttpServer(urlBiz)
 	srv := &http.Server{
 		Addr:    ":" + port,

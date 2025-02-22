@@ -10,6 +10,7 @@ import (
 type UrlBiz interface {
 	CreateUrl(string) (string, error)
 	GetUrl(string) (string, error)
+	DeleteUrlByExpiredTime() error
 }
 type UrlHandler struct {
 	UrlBiz UrlBiz

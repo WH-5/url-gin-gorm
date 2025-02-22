@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/WH-5/url-gin-gorm/configs"
+	"github.com/WH-5/url-gin-gorm/internal/biz"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -55,3 +56,5 @@ func (c *RedisClient) GetURL(shortcode string) (url string, err error) {
 	}
 	return result, nil
 }
+
+var _ biz.Cache = (*RedisClient)(nil)

@@ -9,6 +9,7 @@ import (
 	"github.com/WH-5/url-gin-gorm/configs"
 	"github.com/WH-5/url-gin-gorm/internal/biz"
 	"github.com/go-redis/redis/v8"
+	"time"
 )
 
 type RedisClient struct {
@@ -40,7 +41,8 @@ func (c *RedisClient) SetURL(shortcode, url string) error {
 	if result == 1 {
 		return fmt.Errorf("redis set failed: url %s already exists", url)
 	}
-	_, err = c.client.Set(context.Background(), shortcode, url, 0).Result()
+	duration, _ := time.ParseDuration("1h")
+	_, err = c.client.Set(context.Background(), shortcode, url, duration).Result()
 	if err != nil {
 		return fmt.Errorf("redis set failed: %w", err)
 	}

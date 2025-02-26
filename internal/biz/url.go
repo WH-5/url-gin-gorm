@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/WH-5/url-gin-gorm/internal/data/database"
 	"github.com/WH-5/url-gin-gorm/internal/service"
+	"strconv"
 	"time"
 )
 
@@ -14,10 +15,10 @@ type Url struct {
 	cache    Cache
 	duration time.Duration
 	baseurl  string
-	dbClient database.DBClient
+	dbClient *database.DBClient
 }
 
-func NewUrl(codeGen ShortCodeGen, cache Cache, duration time.Duration, baseurl string, dbClient database.DBClient) *Url {
+func NewUrl(codeGen ShortCodeGen, cache Cache, duration time.Duration, baseurl string, dbClient *database.DBClient) *Url {
 	return &Url{codeGen: codeGen, cache: cache, duration: duration, baseurl: baseurl, dbClient: dbClient}
 }
 
@@ -29,14 +30,67 @@ type ShortCodeGen interface {
 	GenerateShortCode() string
 }
 
-func (u *Url) CreateUrl(s string) (string, error) {
-	//TODO implement me
-	panic("implement me")
+// CreateUrl 传入code和过期时间然后存到数据库和cache
+func (u *Url) CreateUrl(request service.CreateUrlRequest) (string, error) {
+	//数据库结构
+	//ShortCode   string        `gorm:"size:255;not null;uniqueIndex"` //加个唯一索引加快查询速度
+	//OriginalURL string        `gorm:"size:255;not null"`
+	//ExpireTime  time.Time     `gorm:"not null"`
+	//IsExpired   bool          `gorm:"default:false;not null"`
+	//Duration    time.Duration `gorm:"type:int;not null"`
+
+	//cache结构 <code，url>
+	code := request.CustomCode
+	count := 0
+	var available bool
+	var err error
+	if code == "" {
+		for ; count < 5; count++ {
+			code = u.codeGen.GenerateShortCode()
+			available, err = u.dbClient.IsShortCodeAvailable(code)
+			if err != nil {
+				return "", err
+			}
+			if available {
+				break
+			}
+		}
+		if !available {
+			return "", errors.New("程序可能被入侵了，出现异常")
+		}
+	} else {
+		available, err = u.dbClient.IsShortCodeAvailable(code)
+		if !available {
+			return "", errors.New(request.CustomCode + " already used")
+		}
+	}
+	d, err := time.ParseDuration(strconv.Itoa(request.Duration) + "h")
+	err = u.dbClient.CreateShortcode(code, request.OriginalUrl, d)
+	if err != nil {
+		return "", err
+	}
+
+	err = u.cache.SetURL(code, request.OriginalUrl)
+	if err != nil {
+		return "", err
+	}
+	return u.baseurl + code, nil
+
 }
 
 func (u *Url) GetUrl(s string) (string, error) {
-	//TODO implement me
-	panic("implement me")
+	url, err := u.cache.GetURL(s)
+	if err != nil {
+		return "", err
+	}
+	if url != "" {
+		return url, nil
+	}
+	code, err := u.dbClient.GetURLByShortCode(s)
+	if err != nil {
+		return "", err
+	}
+	return code, nil
 }
 func (u *Url) createShortCode() (string, error) {
 	var code string

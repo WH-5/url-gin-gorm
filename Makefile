@@ -12,7 +12,7 @@ make_redis:
 	docker run --name=my-rd \
 	-p 6379:6379 \
 	-d redis \
-	-requirepass whwhwhwhwhwh1321
+	redis-server --requirepass whwhwhwhwhwh1321
 
 
 

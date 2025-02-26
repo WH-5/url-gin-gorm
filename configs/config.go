@@ -3,16 +3,17 @@ package configs
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"log"
 	"os"
 	"time"
 )
 
 type Config struct {
-	DbConfig     `mapstructure:"database"`
-	RdConfig     `mapstructure:"redis"`
-	ServerConfig `mapstructure:"server"`
-	AppConfig    `mapstructure:"app"`
-	ScConfig     `mapstructure:"shortcode"`
+	DB  DbConfig     `mapstructure:"database"`
+	RD  RdConfig     `mapstructure:"redis"`
+	SC  ServerConfig `mapstructure:"server"`
+	AC  AppConfig    `mapstructure:"app"`
+	SCC ScConfig     `mapstructure:"shortcode"`
 }
 type DbConfig struct {
 	Driver     string `mapstructure:"driver"`
@@ -67,11 +68,13 @@ func LoadConfig(filePath string) (*Config, error) {
 		value := viper.GetString(key)
 		expandedValue := os.ExpandEnv(value) // 替换 ${VAR} 格式的环境变量
 		viper.Set(key, expandedValue)
+		//log.Println("config struct unmarshal success ", key, expandedValue)
 	}
 	// 将配置映射到结构体
 	var cfg Config
 	if err := viper.Unmarshal(&cfg); err != nil {
 		return nil, fmt.Errorf("unmarshal config to struct failed, err:%v", err)
 	}
+	log.Println("config struct unmarshal success", filePath, cfg.DB.Host)
 	return &cfg, nil
 }

@@ -6,6 +6,7 @@ import (
 )
 
 //数据库操作
+//方法应该用接口类型的，设计的时候没考虑到
 
 type UrlShortcode struct {
 	gorm.Model
@@ -17,11 +18,11 @@ type UrlShortcode struct {
 }
 
 // CreateShortcode 1.创建一条记录
-func (db *DBClient) CreateShortcode(shortcode string, original string, isExpired bool, dua time.Duration) error {
+func (db *DBClient) CreateShortcode(shortcode string, original string, dua time.Duration) error {
 	sc := UrlShortcode{
 		ShortCode:   shortcode,
 		OriginalURL: original,
-		IsExpired:   isExpired,
+		IsExpired:   false,
 		Duration:    dua,
 		ExpireTime:  time.Now().Add(dua),
 	}
@@ -45,7 +46,7 @@ func (db *DBClient) IsShortCodeAvailable(shortcode string) (bool, error) {
 		Scan(&exists).Error
 	//这样快一点
 	if err == nil {
-		return exists, nil
+		return !exists, nil
 	}
 	return false, err
 }

@@ -1,14 +1,14 @@
 # 容器化的时候环境变量覆盖
 database:
-  driver: ${DB_DRIVER:postgres} #只用pgsql，兼容其他数据库的代码没时间写了
-  host: ${DB_HOST:localhost}
-  user: ${DB_USER:ROOT}
-  port: ${DB_PORT:5432}
-  password: ${DB_PASSWORD:123456}
-  dbname: ${DB_NAME:MAN}
-  ssl_mode: ${DB_SSL:disable}
-  max_idle_con: ${DB_IDLE:5}
-  max_open_con: ${DB_OPEN:5} #最大连接池
+  driver: "postgres" #只用pgsql，兼容其他数据库的代码没时间写了
+  host: "localhost"
+  user: ROOT
+  port: 5432
+  password: "whwhwhwhwhwh1231"
+  dbname: "MAN"
+  ssl_mode: "disable"
+  max_idle_con: 5
+  max_open_con: 5 #最大连接池
 
 redis:
   address: "localhost:6379"
@@ -25,8 +25,8 @@ app:
   # 这里需要在你的系统设置一个名为HOST_NAME的环境变量，值为你的公网ip或者域名，能访问的
   base_port: ""
   #显示重定向地址时的主机及端口名，我设置了反向代理，不用显示端口号了，否则需要设置
-  default_duration: "2h" #默认过期时间
+  default_duration: "2h" #默认过期时间,现在已经弃用
   cleanup_interval: "1h" #定时清理数据时间
 
 shortcode:
-  length: ${SHORTCODE_LENGTH:6} #自动生成的shortcode的长度
+  length: 6 #自动生成的shortcode的长度

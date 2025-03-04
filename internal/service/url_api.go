@@ -80,10 +80,11 @@ func (u *UrlHandler) CreateUrl(c *gin.Context) {
 	}
 	//返回响应
 	duration, _ := time.ParseDuration(d)
+	location, _ := time.LoadLocation("Asia/Shanghai")
 	c.JSON(http.StatusOK, gin.H{
 		"code":         http.StatusOK,
 		"short_url":    createUrl,
-		"expired_time": time.Now().Add(duration).Format(time.RFC3339),
+		"expired_time": time.Now().Add(duration).In(location).Format("2006-01-02 15:04:05"),
 	})
 }
 

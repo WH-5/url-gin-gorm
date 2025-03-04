@@ -1,6 +1,6 @@
 # postgres
 make_postgres:
-	docker run --name my-pg \
+	docker run --name url-pg \
 	-e POSTGRES_USER=ROOT \
 	-e POSTGRES_PASSWORD=whwhwhwhwhwh1231 \
 	-e POSTGRES_DB=MAN \
@@ -9,7 +9,7 @@ make_postgres:
 
 # redis
 make_redis:
-	docker run --name=my-rd \
+	docker run --name=url-rd \
 	-p 6379:6379 \
 	-d redis \
 	redis-server --requirepass whwhwhwhwhwh1321
@@ -19,9 +19,9 @@ make_redis:
 make_db: make_postgres make_redis
 
 start_pg:
-	docker start my-pg
+	docker start url-pg
 
 start_rd:
-	docker start my-rd
+	docker start url-rd
 
 start_db: start_pg start_rd

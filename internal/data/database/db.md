@@ -4,3 +4,6 @@ shortcode表
 "is_custom"布尔
 "short_code" 字符串
 "original_url" 字符串
+
+
+ip访问表：

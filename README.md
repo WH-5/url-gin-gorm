@@ -40,3 +40,30 @@
 | `custom_code` | `string` | ❌ 选填 | 自定义短链接代码，如果不填则自动生成 |
 | `duration`    | `int`    | ❌ 选填 | 短链接的有效期，单位：小时，若不指定则使用默认值 |
 
+# 🚀 运行教程
+
+## **1️⃣ 安装依赖**
+本项目依赖 **Go 语言环境** 和 **Docker**，请确保已安装：
+
+- [Go 官方安装指南](https://go.dev/doc/install)
+- [Docker 官方安装指南](https://docs.docker.com/get-docker/)
+
+
+## **2️⃣ 下载项目**
+```sh
+git clone https://github.com/WH-5/url-gin-gorm.git
+cd url-gin-gorm
+```
+### **3️⃣ 初始化数据库和缓存**
+**首次运行**，执行以下命令创建数据库和缓存容器：
+```sh
+make make_db
+```
+如果如果数据库和缓存容器已存在，后续启动时只需执行：
+```sh
+make start_db
+```
+## **4️⃣ 启动项目**
+```sh
+go run main.go
+```

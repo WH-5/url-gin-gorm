@@ -74,7 +74,7 @@ func (u *Url) CreateUrl(request service.CreateUrlRequest) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return u.baseurl + code, nil
+	return u.baseurl + "/" + code, nil
 
 }
 

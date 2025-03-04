@@ -20,7 +20,7 @@ func NewHttpServer(urlBiz service.UrlBiz) *gin.Engine {
 
 	// 注册中间件
 	r.Use(gin.Recovery()) // 捕获 panic
-	r.Use(gin.Logger())   // 日志中间件
+	//r.Use(gin.Logger())   // 日志中间件
 
 	// 注册自定义校验规则
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {

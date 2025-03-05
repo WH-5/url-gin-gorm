@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 // IpAccess 通过ip记录访问次数
 type IpAccess struct {
 	gorm.Model
-	IPAdr     string `gorm:"size:255;uniqueIndex;not null"`
+	IPAdr     string `gorm:"size:255;not null"`
 	UserAgent string `gorm:"size:255"`
 	//AccessNumber int    `gorm:"default:1;not null"`
 

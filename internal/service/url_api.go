@@ -114,7 +114,7 @@ func (u *UrlHandler) RedirectUrl(c *gin.Context) {
 	//})
 
 	url = AddHTTPPrefix(url)
-	c.Redirect(http.StatusFound, url)
+	c.Redirect(http.StatusMovedPermanently, url)
 
 	//c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(fmt.Sprintf(`
 	//    <html>

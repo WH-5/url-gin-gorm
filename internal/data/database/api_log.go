@@ -8,16 +8,17 @@ type IpAccess struct {
 	IPAdr     string `gorm:"size:255;uniqueIndex;not null"`
 	UserAgent string `gorm:"size:255"`
 	//AccessNumber int    `gorm:"default:1;not null"`
-	ApiAdr string `gorm:"size:255"`
+
 	Url    string `gorm:"size:255"`
+	Method string `gorm:"size:255"`
 }
 
 // AddAccess 加入一条访问记录
-func (db *DBClient) AddAccess(ip, userAgent, api, reqUrl string) error {
+func (db *DBClient) AddAccess(ip, userAgent, reqUrl, method string) error {
 	a := &IpAccess{
 		IPAdr:     ip,
 		UserAgent: userAgent,
-		ApiAdr:    api,
+		Method:    method,
 		Url:       reqUrl,
 	}
 	result := db.db.Create(a)

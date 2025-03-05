@@ -1,7 +1,7 @@
 package biz
 
-func (u *Url) ApiLOG(ip, userAgent, api, reqUrl string) error {
-	err := u.dbClient.AddAccess(ip, userAgent, api, reqUrl)
+func (u *Url) ApiLOG(ip, userAgent, reqUrl, method string) error {
+	err := u.dbClient.AddAccess(ip, userAgent, reqUrl, method)
 	if err != nil {
 		return err
 	}

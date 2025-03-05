@@ -49,10 +49,11 @@ func HeaderInfoMiddleware(biz service.UrlBiz) gin.HandlerFunc {
 		userAgent := c.Request.UserAgent() // 获取 User-Agent
 		url := c.Request.URL.String()
 		method := c.Request.Method
+		full := c.FullPath()
 		// 打印日志或者存储信息
 		log.Printf("IP: %s, User-Agent: %s, Url: %s, method: %s", ip, userAgent, url, method)
 
-		err := biz.ApiLOG(ip, userAgent, url, method)
+		err := biz.ApiLOG(ip, userAgent, url, method, full)
 		if err != nil {
 			return
 		}

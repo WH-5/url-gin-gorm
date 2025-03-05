@@ -14,7 +14,7 @@ type UrlBiz interface {
 	CreateUrl(CreateUrlRequest) (string, error)
 	GetUrl(string) (string, error)
 	DeleteUrlByExpiredTime() error
-	ApiLOG(ip, userAgent, api, reqUrl string) error
+	ApiLOG(ip, userAgent, api, reqUrl, full string) error
 }
 type UrlHandler struct {
 	UrlBiz UrlBiz

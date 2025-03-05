@@ -20,7 +20,8 @@ func NewHttpServer(urlBiz service.UrlBiz) *gin.Engine {
 
 	// 注册中间件
 	r.Use(gin.Recovery()) // 捕获 panic
-	//r.Use(gin.Logger())   // 日志中间件
+	//r.Use(gin.Logger())   // 日志中间件 Default会注册一次这个
+	r.Use(HeaderInfoMiddleware(urlBiz))
 
 	// 注册自定义校验规则
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -38,6 +39,32 @@ func NewHttpServer(urlBiz service.UrlBiz) *gin.Engine {
 	RegisterRoutes(r, urlHandler)
 
 	return r
+}
+
+// HeaderInfoMiddleware 获取请求头信息的中间件
+func HeaderInfoMiddleware(biz service.UrlBiz) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 获取请求头信息
+		ip := c.ClientIP()                 // 获取客户端 IP 地址
+		userAgent := c.Request.UserAgent() // 获取 User-Agent
+		url := c.Request.URL.String()
+		method := c.Request.Method
+		// 打印日志或者存储信息
+		log.Printf("IP: %s, User-Agent: %s, Url: %s, method: %s", ip, userAgent, url, method)
+
+		err := biz.ApiLOG(ip, userAgent, url, method)
+		if err != nil {
+			return
+		}
+		// 将信息保存在上下文中，后续可以在其他地方访问
+		//c.Set("ip", ip)
+		//c.Set("userAgent", userAgent)
+		//
+		//c.Set("url", url)
+		//c.Set("method", method)
+		// 调用后续处理
+		c.Next()
+	}
 }
 
 // RegisterRoutes 注册路由

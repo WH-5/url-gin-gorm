@@ -14,6 +14,7 @@ type UrlBiz interface {
 	CreateUrl(CreateUrlRequest) (string, error)
 	GetUrl(string) (string, error)
 	DeleteUrlByExpiredTime() error
+	ApiLOG(ip, userAgent, api, reqUrl string) error
 }
 type UrlHandler struct {
 	UrlBiz UrlBiz
@@ -78,6 +79,7 @@ func (u *UrlHandler) CreateUrl(c *gin.Context) {
 		})
 		return
 	}
+
 	//返回响应
 	duration, _ := time.ParseDuration(d)
 	location, _ := time.LoadLocation("Asia/Shanghai")
@@ -86,6 +88,7 @@ func (u *UrlHandler) CreateUrl(c *gin.Context) {
 		"short_url":    createUrl,
 		"expired_time": time.Now().Add(duration).In(location).Format("2006-01-02 15:04:05"),
 	})
+
 }
 
 // RedirectUrl GET DirectUrl /:code -> redirect

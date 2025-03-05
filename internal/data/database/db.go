@@ -28,6 +28,7 @@ func NewDB(config configs.DbConfig) (*DBClient, error) {
 
 	//自动迁移
 	err = db.AutoMigrate(&UrlShortcode{})
+	err = db.AutoMigrate(&IpAccess{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to auto migrate database: %w", err)
 	}

@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"github.com/WH-5/url-gin-gorm/internal/service"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
@@ -23,6 +24,7 @@ func NewHttpServer(urlBiz service.UrlBiz) *gin.Engine {
 	//r.Use(gin.Logger())   // 日志中间件 Default会注册一次这个
 	r.Use(HeaderInfoMiddleware(urlBiz))
 
+	r.Use(cors.Default())
 	// 注册自定义校验规则
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		err := v.RegisterValidation("customURL", service.ValidateURL)

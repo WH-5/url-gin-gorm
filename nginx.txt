@@ -1,0 +1,31 @@
+# nginx参考配置文件
+server {
+    listen 80;
+    server_name xx;#服务器域名
+
+    root  /var/www/html;
+    index index.html;
+
+    location = / {
+        try_files $uri /index.html;
+    }
+
+    location = /create {
+        try_files $uri /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:8080/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location  ~ ^/[a-zA-Z0-9]+$ {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
